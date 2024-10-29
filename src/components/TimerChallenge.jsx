@@ -5,6 +5,7 @@ export default function TimerChallenge({ title, targetTime }) {
   const [timerStarted, setTimerStarted] = useState(false);
   const [timerExpired, setTimerExpired] = useState(false);
   const timer = useRef();
+  const dialog = useRef();
 
   // Each component instance will get its own timer ref that works independelty from toher refs of other comonent instances
   // This ref will not be reset or cleared when component re-executes
@@ -14,6 +15,7 @@ export default function TimerChallenge({ title, targetTime }) {
   function handleStart() {
     timer.current = setTimeout(() => {
       setTimerExpired(true);
+      dialog.current.showModal();
     }, targetTime * 1000);
 
     setTimerStarted(true);
@@ -25,7 +27,7 @@ export default function TimerChallenge({ title, targetTime }) {
 
   return (
     <>
-      {timerExpired && <ResultModal targetTime={targetTime} result="lost" />}
+      <ResultModal targetTime={targetTime} result="lost" ref={dialog} />
       <section className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">
